@@ -1,0 +1,81 @@
+Files to turn in : ft_ultimate_range.c
+Allowed functions : malloc
+
+• Create a function ft_ultimate_range which allocates and assigns an array of ints.
+This int array should contain all values between min and max.
+• Min included - max excluded.
+• Here’s how it should be prototyped :
+int ft_ultimate_range(int **range, int min, int max);
+
+• The size of range should be returned (or -1 on error).
+• If the value of min is greater or equal to max’s value, range will point on NULL
+and it should return 0.
+
+Here's the implementation of the `ft_ultimate_range` function:
+
+```c
+#include <stdlib.h>
+
+int ft_ultimate_range(int **range, int min, int max) {
+    if (min >= max) {
+        *range = NULL;
+        return 0;
+    }
+
+    int size = max - min;
+    *range = (int *)malloc(size * sizeof(int));
+
+    if (*range == NULL) {
+        return -1;
+    }
+
+    for (int i = 0; i < size; i++) {
+        (*range)[i] = min++;
+    }
+
+    return size;
+}
+```
+
+In this function, we first check if the value of `min` is greater or equal to `max`. If it is, we set `*range` to `NULL` and return 0.
+
+Otherwise, we calculate the size of the range as `max - min`. We allocate memory for the range using `malloc` and store the pointer in `*range`. If the memory allocation fails, we return -1.
+
+Finally, we use a loop to fill the range with values starting from `min` and incrementing it for each element. We return the size of the range.
+
+Remember to include the necessary header (`stdlib.h`) in your program when using this function.
+
+Certainly! Here's an example of a test program for the `ft_ultimate_range` function:
+
+```c
+#include <stdio.h>
+#include "ft_ultimate_range.c"
+
+int main() {
+    int *range;
+    int size = ft_ultimate_range(&range, 10, 20);
+
+    if (range == NULL) {
+        printf("Range is NULL. Size: %d\n", size);
+    } else {
+        printf("Range: ");
+        for (int i = 0; i < size; i++) {
+            printf("%d ", range[i]);
+        }
+        printf("\nSize: %d\n", size);
+
+        // Free the allocated memory
+        free(range);
+    }
+
+    return 0;
+}
+```
+
+In this test program, we call the `ft_ultimate_range` function with `min` value of 10 and `max` value of 20. We store the size of the range in the `size` variable.
+
+We then check if the range pointer is `NULL`. If it is, we print a message indicating that the range is NULL and display the size. Otherwise, we iterate through the range and print its values. Finally, we print the size of the range.
+
+Don't forget to include the necessary headers and to compile the program with the `ft_ultimate_range.c` file.
+
+Remember to always free the allocated memory using `free` to avoid memory leaks.
