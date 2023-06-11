@@ -1,0 +1,41 @@
+Files to turn in : ft_strdup.c
+Allowed functions : malloc
+
+• Reproduce the behavior of the function strdup (man strdup).
+• Here’s how it should be prototyped :
+char *ft_strdup(char *src);
+
+Here's an implementation of the `ft_strdup` function that reproduces the behavior of the `strdup` function:
+
+```c
+#include <stdlib.h>
+
+char *ft_strdup(char *src) {
+    // Find the length of the source string
+    int length = 0;
+    while (src[length] != '\0') {
+        length++;
+    }
+
+    // Allocate memory for the duplicate string
+    char *duplicate = (char *)malloc((length + 1) * sizeof(char));
+
+    // Check if memory allocation was successful
+    if (duplicate == NULL) {
+        return NULL;
+    }
+
+    // Copy the characters from source to duplicate
+    for (int i = 0; i <= length; i++) {
+        duplicate[i] = src[i];
+    }
+
+    return duplicate;
+}
+```
+
+The `ft_strdup` function takes a string `src` as input and returns a dynamically allocated duplicate of the string. It first calculates the length of the source string by iterating until it reaches the null terminator `'\0'`. Then, it allocates memory for the duplicate string using `malloc`, ensuring to allocate space for the null terminator as well.
+
+If the memory allocation is successful, the function proceeds to copy each character from the source string to the duplicate string using a loop. Finally, it returns the pointer to the duplicate string.
+
+It's important to note that the caller is responsible for freeing the memory allocated by `ft_strdup` when it's no longer needed.
