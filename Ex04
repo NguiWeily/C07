@@ -1,0 +1,153 @@
+Files to turn in : ft_convert_base.c, ft_convert_base2.c
+Allowed functions : malloc, free
+
+• Create a function that returns the result of the conversion of the string nbr from a
+base base_from to a base base_to.
+• nbr, base_from, base_to may be not writable.
+• nbr will follow the same rules as ft_atoi_base (from an other module). Beware of
+’+’, ’-’ and whitespaces.
+• The number represented by nbr must fit inside an int.
+• If a base is wrong, NULL should be returned.
+• The returned number must be prefix only by a single and uniq ’-’ if necessary, no
+whitespaces, no ’+’.
+• Here’s how it should be prototyped :
+char *ft_convert_base(char *nbr, char *base_from, char *base_to);
+
+Here's an example implementation of the `ft_convert_base` function:
+
+```c
+#include <stdlib.h>
+
+int ft_strlen(char *str)
+{
+    int len = 0;
+    while (str[len])
+        len++;
+    return len;
+}
+
+int ft_atoi_base(char *str, char *base)
+{
+    int nbr = 0;
+    int sign = 1;
+    int base_len = ft_strlen(base);
+
+    // Check for sign
+    if (*str == '-')
+    {
+        sign = -1;
+        str++;
+    }
+    else if (*str == '+')
+    {
+        str++;
+    }
+
+    // Convert the number
+    while (*str)
+    {
+        int digit = 0;
+        while (base[digit] && base[digit] != *str)
+            digit++;
+
+        if (base[digit] == '\0')
+            return 0; // Invalid character in input
+
+        nbr = nbr * base_len + digit;
+        str++;
+    }
+
+    return nbr * sign;
+}
+
+char *ft_itoa_base(int nbr, char *base)
+{
+    int base_len = ft_strlen(base);
+    int nbr_len = 0;
+    int tmp = nbr;
+
+    // Determine the length of the resulting string
+    if (nbr <= 0)
+    {
+        nbr_len = 1; // Account for the '-' sign
+        tmp = -tmp;
+    }
+
+    while (tmp > 0)
+    {
+        nbr_len++;
+        tmp /= base_len;
+    }
+
+    // Allocate memory for the resulting string
+    char *result = (char *)malloc((nbr_len + 1) * sizeof(char));
+    if (result == NULL)
+        return NULL;
+
+    // Convert the number to the specified base
+    result[nbr_len] = '\0';
+    if (nbr == 0)
+    {
+        result[0] = '0';
+        return result;
+    }
+
+    if (nbr < 0)
+    {
+        result[0] = '-';
+        nbr = -nbr;
+    }
+
+    while (nbr > 0)
+    {
+        result[--nbr_len] = base[nbr % base_len];
+        nbr /= base_len;
+    }
+
+    return result;
+}
+
+char *ft_convert_base(char *nbr, char *base_from, char *base_to)
+{
+    int nbr_value = ft_atoi_base(nbr, base_from);
+    if (nbr_value == 0)
+        return NULL; // Invalid input number
+
+    char *result = ft_itoa_base(nbr_value, base_to);
+    return result;
+}
+```
+
+Make sure to include the necessary headers and adjust the code based on your project setup. This implementation includes helper functions `ft_strlen` to calculate the length of a string, `ft_atoi_base` to convert a number from a base, and `ft_itoa_base` to convert a number to a specified base.
+
+Certainly! Here's an example test code `ft_convert_base2.c` for the `ft_convert_base` function:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+char *ft_convert_base(char *nbr, char *base_from, char *base_to);
+
+int main(void)
+{
+    char *nbr = "1010";        // Binary number: 10
+    char *base_from = "01";    // Binary base
+    char *base_to = "01234567"; // Octal base
+
+    char *result = ft_convert_base(nbr, base_from, base_to);
+    if (result == NULL)
+    {
+        printf("Invalid conversion. Exiting...\n");
+        return 0;
+    }
+
+    printf("Converted number: %s\n", result);
+
+    free(result);
+    return 0;
+}
+```
+
+In this test code, we convert a binary number `1010` to an octal number using the `ft_convert_base` function. We specify the `base_from` as `"01"` (binary base) and `base_to` as `"01234567"` (octal base). The resulting octal number should be `12`.
+
+Make sure to include the necessary headers and adjust the code based on your project setup.
