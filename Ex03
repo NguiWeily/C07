@@ -1,0 +1,130 @@
+Files to turn in : ft_strjoin.c
+Allowed functions : malloc
+
+• Write a function that will concatenate all the strings pointed by strs separated by
+sep.
+• size is the number of strings in strs
+• if size is 0, it should a freeable empty string.
+• Here’s how it should be prototyped :
+char *ft_strjoin(int size, char **strs, char *sep);
+
+Here's the implementation of the `ft_strjoin` function:
+
+```c
+#include <stdlib.h>
+
+int ft_strlen(char *str)
+{
+    int len = 0;
+    while (str[len])
+        len++;
+    return len;
+}
+
+char *ft_strcat(char *dest, char *src)
+{
+    int dest_len = ft_strlen(dest);
+    int i = 0;
+    while (src[i])
+    {
+        dest[dest_len + i] = src[i];
+        i++;
+    }
+    dest[dest_len + i] = '\0';
+    return dest;
+}
+
+char *ft_strjoin(int size, char **strs, char *sep)
+{
+    if (size <= 0)
+    {
+        char *empty_str = malloc(sizeof(char));
+        if (empty_str == NULL)
+            return NULL;
+        empty_str[0] = '\0';
+        return empty_str;
+    }
+
+    int total_len = 0;
+    for (int i = 0; i < size; i++)
+        total_len += ft_strlen(strs[i]);
+
+    int sep_len = ft_strlen(sep);
+    int result_len = total_len + (size - 1) * sep_len + 1;
+
+    char *result = malloc(result_len * sizeof(char));
+    if (result == NULL)
+        return NULL;
+
+    result[0] = '\0'; // Initialize the result string as an empty string
+
+    for (int i = 0; i < size; i++)
+    {
+        ft_strcat(result, strs[i]);
+        if (i < size - 1)
+            ft_strcat(result, sep);
+    }
+
+    return result;
+}
+```
+
+The `ft_strjoin` function concatenates all the strings pointed by `strs`, separated by the `sep` string. The `size` parameter indicates the number of strings in `strs`.
+
+If `size` is 0, the function returns a freeable empty string.
+
+The function first calculates the total length of all the strings in `strs` and the length of the `sep` string. Then, it calculates the length of the resulting string by adding the total length of the strings and the separators.
+
+Next, it allocates memory for the resulting string and initializes it as an empty string. It then iterates over the `strs` array, concatenating each string and the separator (except for the last string).
+
+Finally, it returns the resulting string.
+
+Remember to include the necessary headers and to free the memory allocated for the resulting string when it is no longer needed.
+
+Here's an example test code for the `ft_strjoin` function:
+
+```c
+#include <stdio.h>
+#include "ft_strjoin.c" // Include the implementation of ft_strjoin
+
+int main(void)
+{
+    // Test case 1: Concatenate three strings with a comma separator
+    char *strs1[] = {"Hello", "world", "!"};
+    char *sep1 = ",";
+    char *result1 = ft_strjoin(3, strs1, sep1);
+    printf("Result 1: %s\n", result1);
+    // Expected output: "Hello,world,!"
+
+    // Test case 2: Concatenate two strings with an empty separator
+    char *strs2[] = {"Open", "AI"};
+    char *sep2 = "";
+    char *result2 = ft_strjoin(2, strs2, sep2);
+    printf("Result 2: %s\n", result2);
+    // Expected output: "OpenAI"
+
+    // Test case 3: Concatenate four strings with a space separator
+    char *strs3[] = {"This", "is", "a", "test"};
+    char *sep3 = " ";
+    char *result3 = ft_strjoin(4, strs3, sep3);
+    printf("Result 3: %s\n", result3);
+    // Expected output: "This is a test"
+
+    // Test case 4: Concatenate no strings (size 0)
+    char *strs4[] = {};
+    char *sep4 = "-";
+    char *result4 = ft_strjoin(0, strs4, sep4);
+    printf("Result 4: %s\n", result4);
+    // Expected output: ""
+
+    // Free the allocated memory for the resulting strings
+    free(result1);
+    free(result2);
+    free(result3);
+    free(result4);
+
+    return 0;
+}
+```
+
+Make sure to include the necessary headers and adjust the file inclusion based on your project setup. This test code covers different scenarios such as concatenating strings with different separators and handling an empty `strs` array.
