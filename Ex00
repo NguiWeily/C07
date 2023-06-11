@@ -39,3 +39,44 @@ The `ft_strdup` function takes a string `src` as input and returns a dynamically
 If the memory allocation is successful, the function proceeds to copy each character from the source string to the duplicate string using a loop. Finally, it returns the pointer to the duplicate string.
 
 It's important to note that the caller is responsible for freeing the memory allocated by `ft_strdup` when it's no longer needed.
+
+Certainly! Here's a test program for the `ft_strdup` function:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char *ft_strdup(char *src);
+
+int main() {
+    char *src = "Hello, world!";
+
+    char *duplicate = ft_strdup(src);
+
+    if (duplicate == NULL) {
+        printf("Memory allocation failed.\n");
+        return 1;
+    }
+
+    printf("Original string: %s\n", src);
+    printf("Duplicate string: %s\n", duplicate);
+
+    // Verify that the duplicate string is the same as the original string
+    if (strcmp(src, duplicate) == 0) {
+        printf("Strings are identical.\n");
+    } else {
+        printf("Strings are different.\n");
+    }
+
+    free(duplicate);
+
+    return 0;
+}
+```
+
+In this test program, we define a source string `src` with the value "Hello, world!". We call the `ft_strdup` function to create a duplicate string. If the returned pointer is NULL, it means memory allocation failed, and we print an error message.
+
+Next, we print the original string and the duplicate string to verify their values. Finally, we use `strcmp` to compare the original string and the duplicate string. If they are identical, we print a corresponding message. After that, we free the memory allocated for the duplicate string.
+
+Don't forget to include the necessary headers (`stdio.h` for `printf`, `stdlib.h` for `free`, and `string.h` for `strcmp`) and to compile the program with the `ft_strdup.c` file that contains the implementation of the `ft_strdup` function.
