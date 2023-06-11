@@ -1,0 +1,79 @@
+Files to turn in : ft_range.c
+Allowed functions : malloc
+
+• Create a function ft_range which returns an array ofints. This int array should
+contain all values between min and max.
+• Min included - max excluded.
+• Here’s how it should be prototyped :
+int *ft_range(int min, int max);
+
+• If min ́value is greater or equal to max’s value, a null pointer should be returned.
+
+Here's an updated implementation of the `ft_range` function:
+
+```c
+#include <stdlib.h>
+
+int *ft_range(int min, int max) {
+    if (min >= max) {
+        return NULL;
+    }
+
+    int size = max - min;
+    int *range = malloc(size * sizeof(int));
+
+    if (range == NULL) {
+        return NULL;
+    }
+
+    for (int i = 0; i < size; i++) {
+        range[i] = min++;
+    }
+
+    return range;
+}
+```
+
+The `ft_range` function takes two integers `min` and `max` as input and returns a dynamically allocated array of integers. It first checks if `min` is greater than or equal to `max`. If so, it returns a null pointer.
+
+If the range is valid, the function calculates the size of the range by subtracting `min` from `max`. It then allocates memory for the range using `malloc`, ensuring to allocate enough space for the required number of integers.
+
+If the memory allocation is successful, the function proceeds to fill the range array with values starting from `min` and incrementing it in each iteration of the loop.
+
+Finally, it returns the pointer to the range array.
+
+Remember to free the memory allocated by `ft_range` when it's no longer needed to avoid memory leaks.
+
+Here's a test program for the `ft_range` function:
+
+```c
+#include <stdio.h>
+
+int *ft_range(int min, int max);
+
+int main() {
+    int min = 5;
+    int max = 10;
+
+    int *range = ft_range(min, max);
+
+    if (range == NULL) {
+        printf("Invalid range\n");
+    } else {
+        int size = max - min;
+        printf("Range: ");
+        for (int i = 0; i < size; i++) {
+            printf("%d ", range[i]);
+        }
+        printf("\n");
+
+        free(range);
+    }
+
+    return 0;
+}
+```
+
+In this test program, we define a range from 5 to 10. We call the `ft_range` function to obtain the range array. If the returned pointer is NULL, it means the range is invalid, and we print an error message. Otherwise, we iterate over the range array and print each element.
+
+Don't forget to include the necessary headers (`stdio.h` for `printf` and `stdlib.h` for `free`) and to compile the program with the `ft_range.c` file that contains the implementation of the `ft_range` function.
