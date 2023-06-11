@@ -1,0 +1,147 @@
+Files to turn in : ft_split.c
+Allowed functions : malloc
+
+• Create a function that splits a string of character depending on another string of
+characters.
+• You’ll have to use each character from the string charset as a separator.
+• The function returns an array where each element of the array contains the address
+of a string wrapped between two separators. The last element of that array should
+equal to 0 to indicate the end of the array.
+
+• There cannot be any empty strings in your array. Get your own conclusions ac-
+cordingly.
+
+• The string given as argument won’t be modifiable.
+• Here’s how it should be prototyped :
+char **ft_split(char *str, char *charset);
+
+Here's an example implementation of the `ft_split` function:
+
+```c
+#include <stdlib.h>
+
+int is_separator(char c, char *charset)
+{
+    while (*charset)
+    {
+        if (c == *charset)
+            return 1;
+        charset++;
+    }
+    return 0;
+}
+
+int count_words(char *str, char *charset)
+{
+    int count = 0;
+    int is_word = 0;
+
+    while (*str)
+    {
+        if (is_separator(*str, charset))
+        {
+            is_word = 0;
+        }
+        else if (!is_word)
+        {
+            is_word = 1;
+            count++;
+        }
+        str++;
+    }
+
+    return count;
+}
+
+char *copy_word(char *str, char *charset)
+{
+    int length = 0;
+
+    while (str[length] && !is_separator(str[length], charset))
+        length++;
+
+    char *word = (char *)malloc((length + 1) * sizeof(char));
+    if (word == NULL)
+        return NULL;
+
+    for (int i = 0; i < length; i++)
+        word[i] = str[i];
+
+    word[length] = '\0';
+
+    return word;
+}
+
+char **ft_split(char *str, char *charset)
+{
+    int word_count = count_words(str, charset);
+
+    char **result = (char **)malloc((word_count + 1) * sizeof(char *));
+    if (result == NULL)
+        return NULL;
+
+    int i = 0;
+    int is_word = 0;
+
+    while (*str)
+    {
+        if (is_separator(*str, charset))
+        {
+            is_word = 0;
+        }
+        else if (!is_word)
+        {
+            is_word = 1;
+            result[i] = copy_word(str, charset);
+            if (result[i] == NULL)
+            {
+                // Free memory for previously allocated words
+                for (int j = 0; j < i; j++)
+                    free(result[j]);
+                free(result);
+                return NULL;
+            }
+            i++;
+        }
+        str++;
+    }
+
+    result[i] = NULL;
+
+    return result;
+}
+```
+
+You can test the `ft_split` function with the following code:
+
+```c
+#include <stdio.h>
+
+void print_string_array(char **array)
+{
+    if (array == NULL)
+        return;
+
+    int i = 0;
+    while (array[i])
+    {
+        printf("%s\n", array[i]);
+        i++;
+    }
+}
+
+int main(void)
+{
+    char *str = "Hello,world!This,is,a,test";
+    char *charset = ",!";
+
+    char **result = ft_split(str, charset);
+    print_string_array(result);
+
+    return 0;
+}
+```
+
+This code splits the string `"Hello,world!This,is,a,test"` using the separators `","` and `"!"`. The resulting array of strings is then printed using the `print_string_array` function.
+
+Make sure to include the necessary headers and adjust the code based on your project setup.
